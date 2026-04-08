@@ -14,6 +14,10 @@
       "dest": "/api/setup.js"
     },
     {
+      "src": "/api/test",
+      "dest": "/api/test.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
