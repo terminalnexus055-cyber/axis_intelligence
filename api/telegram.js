@@ -138,7 +138,7 @@ async function callGroq(userText, systemPrompt) {
   }
 
   console.log('Groq success');
-  return `⚡ ${result}`;
+  return result;
 }
 
 async function sendMessage(chatId, text) {
