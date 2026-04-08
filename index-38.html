@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AXIS — Intelligence System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --accent: #00ff88;
+      --accent2: #0088ff;
+      --text: #e8e8e8;
+      --muted: #444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .status-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .status-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .status-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .dept-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .dept {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .dept-icon { font-size: 20px; margin-bottom: 6px; }
+    .dept-name { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+
+    .mission {
+      border-left: 2px solid var(--accent);
+      padding-left: 16px;
+      margin-top: 16px;
+    }
+
+    .mission-label {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .mission-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 32px;
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .version {
+      color: var(--accent2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">AXIS</div>
+    <div class="tagline">Autonomous Intelligence System</div>
+
+    <div class="status-card">
+      <div class="status-header">
+        <div class="pulse"></div>
+        <div class="status-label">All Systems Operational</div>
+      </div>
+
+      <div class="dept-grid">
+        <div class="dept">
+          <div class="dept-icon">🔍</div>
+          <div class="dept-name">Intel</div>
+        </div>
+        <div class="dept">
+          <div class="dept-icon">📣</div>
+          <div class="dept-name">Marketing</div>
+        </div>
+        <div class="dept">
+          <div class="dept-icon">🤝</div>
+          <div class="dept-name">Outreach</div>
+        </div>
+        <div class="dept">
+          <div class="dept-icon">🎯</div>
+          <div class="dept-name">Strategy</div>
+        </div>
+      </div>
+
+      <div class="mission">
+        <div class="mission-label">Active Mission</div>
+        <div class="mission-text">Acquire first FORGE user with 10/10 pain score</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span class="version">AXIS v1.0</span> — Built for Mohammed · Powered by Gemini + Groq
+    </div>
+  </div>
+</body>
+</html>
