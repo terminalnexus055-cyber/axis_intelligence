@@ -1,0 +1,43 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/telegram",
+      "dest": "/api/telegram.js"
+    },
+    {
+      "src": "/api/browser",
+      "dest": "/api/browser.js"
+    },
+    {
+      "src": "/api/cron",
+      "dest": "/api/cron.js"
+    },
+    {
+      "src": "/api/setup",
+      "dest": "/api/setup.js"
+    },
+    {
+      "src": "/api/test",
+      "dest": "/api/test.js"
+    },
+    {
+      "src": "/api/arcticTest",
+      "dest": "/api/arcticTest.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron",
+      "schedule": "0 13 * * *"
+    }
+  ]
+}
