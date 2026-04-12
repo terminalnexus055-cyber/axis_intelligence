@@ -673,24 +673,17 @@ async function generateVoiceover(script) {
     }
 
     const audioBuffer = await response.arrayBuffer();
+    const base64Audio = Buffer.from(audioBuffer).toString('base64');
 
-    // Upload to 0x0.st for a public URL JSON2Video can access
-    const formData = new FormData();
-    const blob = new Blob([audioBuffer], { type: 'audio/mp3' });
-    formData.append('file', blob, 'voiceover.mp3');
+    // Store in Redis with unique key
+    const audioId = `audio_${Date.now()}`;
+    await redisSet(`axis:audio:${audioId}`, base64Audio, 3600);
 
-    const uploadRes = await fetch('https://0x0.st', {
-      method: 'POST',
-      body: formData
-    });
-
-    if (!uploadRes.ok) {
-      console.error('Audio upload failed:', uploadRes.status);
-      return null;
-    }
-
-    const publicUrl = await uploadRes.text();
-    return publicUrl.trim();
+    // Return Vercel-served URL
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://axis-intelligence.vercel.app';
+    return `${baseUrl}/api/audio?id=${audioId}`;
   } catch (err) {
     console.error('Voiceover error:', err.message);
     return null;
