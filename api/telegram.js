@@ -955,29 +955,60 @@ RULES:
 }
 // ---------- END OF PATCH 3 ----------
 
+
 async function generateVoiceover(script) {
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/audio/speech', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'canopylabs/orpheus-v1-english',
-        input: script,
-        voice: 'dan',
-        response_format: 'wav'
-      })
-    });
+    // Orpheus limit is 200 chars per request — split if needed
+    const chunks = [];
+    const words = script.split(' ');
+    let current = '';
+    for (const word of words) {
+      if ((current + ' ' + word).trim().length > 180) {
+        if (current) chunks.push(current.trim());
+        current = word;
+      } else {
+        current = (current + ' ' + word).trim();
+      }
+    }
+    if (current) chunks.push(current.trim());
 
-    if (!response.ok) {
-      console.error('Groq TTS failed:', response.status, await response.text());
-      return null;
+    // Generate audio for each chunk
+    const audioBuffers = [];
+    for (const chunk of chunks) {
+      const response = await fetch('https://api.groq.com/openai/v1/audio/speech', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'canopylabs/orpheus-v1-english',
+          input: chunk,
+          voice: 'dan',
+          response_format: 'wav'
+        })
+      });
+
+      if (!response.ok) {
+        console.error('Groq TTS chunk failed:', response.status, await response.text());
+        return null;
+      }
+      const buf = await response.arrayBuffer();
+      audioBuffers.push(Buffer.from(buf));
     }
 
-    const audioBuffer = await response.arrayBuffer();
-    const base64Audio = Buffer.from(audioBuffer).toString('base64');
+    // Concatenate all WAV buffers — strip headers from all but first
+    let combined;
+    if (audioBuffers.length === 1) {
+      combined = audioBuffers[0];
+    } else {
+      // WAV header is 44 bytes — keep first header, strip rest
+      const first = audioBuffers[0];
+      const rest = audioBuffers.slice(1).map(b => b.slice(44));
+      combined = Buffer.concat([first, ...rest]);
+    }
+
+    const base64Audio = combined.toString('base64');
     const audioId = `audio_${Date.now()}`;
     await redisSet(`axis:audio:${audioId}`, base64Audio, 3600);
     return `https://axis-intelligence.vercel.app/api/audio?id=${audioId}`;
@@ -986,7 +1017,6 @@ async function generateVoiceover(script) {
     return null;
   }
 }
-
 async function submitVideoRender(audioUrl, script, caption) {
   try {
     if (!script || !script.scenes || !audioUrl) {
