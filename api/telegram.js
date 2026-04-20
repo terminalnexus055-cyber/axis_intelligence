@@ -984,7 +984,7 @@ async function generateVoiceover(script) {
         body: JSON.stringify({
           model: 'canopylabs/orpheus-v1-english',
           input: chunk,
-          voice: 'dan',
+          voice: 'daniel',
           response_format: 'wav'
         })
       });
