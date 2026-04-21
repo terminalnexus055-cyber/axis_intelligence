@@ -14,6 +14,7 @@
     { "src": "/api/rssTest", "dest": "/api/rssTest.js" },
     { "src": "/api/videoTest", "dest": "/api/videoTest.js" },
     { "src": "/api/audio", "dest": "/api/audio.js" },
+    { "src": "/api/media", "dest": "/api/media.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "crons": [
