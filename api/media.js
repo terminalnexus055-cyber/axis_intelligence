@@ -22,10 +22,16 @@ export default async function handler(req, res) {
       attempts++;
     }
 
-    const buffer = Buffer.from(val, 'base64');
+    // val is now the Telegram file URL — proxy it
+    const telegramRes = await fetch(val);
+    if (!telegramRes.ok) {
+      return res.status(502).json({ error: 'Failed to fetch from Telegram' });
+    }
+
     res.setHeader('Content-Type', 'video/mp4');
-    res.setHeader('Content-Length', buffer.length);
-    return res.status(200).send(buffer);
+    const buffer = await telegramRes.arrayBuffer();
+    return res.status(200).send(Buffer.from(buffer));
+
   } catch (err) {
     console.error('Media serve error:', err.message);
     return res.status(500).json({ error: 'Failed to serve media' });
