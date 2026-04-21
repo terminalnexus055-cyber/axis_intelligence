@@ -1027,7 +1027,7 @@ async function submitVideoRender(audioUrl, script, caption) {
     const jobId = `render_${Date.now()}`;
     const callbackUrl = `https://axis-intelligence.vercel.app/api/telegram?render_callback=1&job_id=${jobId}`;
 
-    const response = await fetch('https://axis-renderer.onrender.com/render', {
+    const response = await fetch('https://moh2009-axis-renderer.hf.space/render', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
